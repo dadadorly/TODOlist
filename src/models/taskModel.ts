@@ -1,16 +1,16 @@
-import mongoose from "mongoose"
+import mongoose from "mongoose";
 
 const taskSchema = new mongoose.Schema({
-  task : {
+  task: {
     type: String,
     required: true,
     minlength: 1,
-    unique:true
+    unique: true
   },
-  state : {
+  state: {
     type: Boolean,
     default: false
-  },
-})
+  }
+});
 
-export default  mongoose.model('task', taskSchema)
+export default mongoose.model("task", taskSchema);

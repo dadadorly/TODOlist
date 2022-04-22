@@ -1,5 +1,6 @@
 import {Request, Response} from "express";
 import {v4} from "uuid";
+import TaskModel from "../models/taskModel";
 
 interface todo {
   id: number | string,
@@ -7,9 +8,6 @@ interface todo {
   state: boolean
 }
 
-interface CustomRequest<T> extends Request {
-  body: T;
-}
 
 const todos: todo[] = [
   {
@@ -25,50 +23,76 @@ const todos: todo[] = [
   }
 ];
 
+
 const uuid = v4();
 
-export function getTodoList(req: Request, res: Response) {
-  res.json([todos]);
+export async function getTodoList(req: Request, res: Response) {
+  const tasks = await TaskModel.find();
+  res.json(tasks);
 }
 
-export function getById({params: {id}}: Request<{ id: string | number }>, res: Response) {
-  id = +id;
+export async function getById({params: {id}}: Request<{ id: string | number }>, res: Response) {
+  id = id;
 
-  const result = todos.find(element => element.id === +id);
-  res.json(result);
+  //const result = todos.find(element => element.id === +id);
+  const taskById = await TaskModel.findById(id);
+  res.json(taskById);
 
 }
 
-export function addTodoList(req: Request, res: Response) {
-  console.log(uuid);
+export async function addTodoList(req: Request, res: Response) {
+  /*  console.log(uuid);
 
-  todos.push({
-    id: uuid,
-    task: req.body.task,
-    state: req.body.state
+    todos.push({
+      id: uuid,
+      task: req.body.task,
+      state: req.body.state
+    });*/
+
+  const task = new TaskModel({
+    task: req.body.task
   });
 
-  res.send();
+  await task.save();
+
+  res.status(201).send(`task ${req.body.task} is created!`);
 }
 
-export function delTodoList({params: {id}}: Request<{ id: string | number }>, res: Response) {
+export async function delTodoList({params: {id}}: Request<{ id: string | number }>, res: Response) {
   id = +id;
 
-  const result = todos.find((element, index) => {
-    if (element.id === id) return todos.splice(index, 1);
-  });
+  /*  const result = todos.find((element, index) => {
+      if (element.id === id) return todos.splice(index, 1);
+    });*/
+  const taskDel = await TaskModel.findByIdAndDelete(id);
+  res.send("Delete Success");
 
 }
 
 
-export function updateTask(req: Request<{ id: string | number }>, res: Response) {
-  const id = +req.params.id;
+export async function updateTask(req: Request<{ id: string | number }>, res: Response) {
+  const id = req.params.id;
 
-  const index = todos.findIndex(element => element.id === id);
+  /*  const index = todos.findIndex(element => element.id === id);
 
-  todos[index].task = req.body.task;
-  todos[index].state = req.body.state;
-  res.send();
+    todos[index].task = req.body.task;
+    todos[index].state = req.body.state;*/
+
+  /*const task =  await TaskModel.findById(id)
+                        .update(req.body);*/
+//  const task =  await TaskModel.findByIdAndUpdate(id,req.body)
+
+  const task = await TaskModel.findById(id);
+  if (task.state !== req.body.state) {
+    task.state = req.body.state;
+  }
+  if (task.task !== req.body.task) {
+    task.task = req.body.task;
+  }
+  const newTask = new TaskModel(task);
+  await newTask.save();
+
+  res.send("Update Success");
 }
 
 

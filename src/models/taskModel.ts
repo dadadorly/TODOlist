@@ -1,6 +1,11 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
-const taskSchema = new mongoose.Schema({
+export interface Task {
+  task: string;
+  state: boolean;
+}
+
+const taskSchema = new mongoose.Schema<Task>({
   task: {
     type: String,
     required: true,
@@ -13,4 +18,4 @@ const taskSchema = new mongoose.Schema({
   }
 });
 
-export default mongoose.model("task", taskSchema);
+export default mongoose.model('task', taskSchema);

@@ -1,22 +1,24 @@
-import {Request, Response} from "express";
-import TaskModel from "../models/taskModel";
-
-interface todo {
-  id: number | string,
-  task: string,
-  state: boolean
-}
-
+import { Request, Response } from 'express';
+import TaskModel from '../models/taskModel';
 
 export async function getTodoList(req: Request, res: Response) {
   const tasks = await TaskModel.find();
+
   res.json(tasks);
+  return tasks;
 }
 
-export async function getById({params: {id}}: Request<{ id: string | number }>, res: Response) {
+export async function getById(
+  { params: { id } }: Request<{ id: string | number }>,
+  res: Response
+) {
   const taskById = await TaskModel.findById(id);
-  res.json(taskById);
 
+  if (!taskById) return 'task not found';
+  else {
+    res.json(taskById);
+    return taskById;
+  }
 }
 
 export async function addTodoList(req: Request, res: Response) {
@@ -26,40 +28,36 @@ export async function addTodoList(req: Request, res: Response) {
 
   await task.save();
 
-  res.status(201).send(`Task : "${req.body.task}" has been created!`);
+  //res.send(`Task : "${req.body.task}" has been created!` );
+  return req.body.task;
 }
 
-export async function delTodoList({params: {id}}: Request<{ id: string | number }>, res: Response) {
-
+export async function delTodoList(
+  { params: { id } }: Request<{ id: string }>,
+  res: Response
+) {
   const taskDel = await TaskModel.findByIdAndDelete(id);
-  res.send("Task : \"" + taskDel.task + "\" has been deleted");
-
+  if (!taskDel) return 'task not found';
+  else return res.send('Task : "' + taskDel.task + '" has been deleted');
 }
 
-
-export async function updateTask(req: Request<{ id: string | number }>, res: Response) {
+export async function updateTask(req: Request<{ id: string }>, res: Response) {
   const id = req.params.id;
+  const newTask = null;
 
   const task = await TaskModel.findById(id);
-  if (task.state !== req.body.state) {
-    task.state = req.body.state;
+  if (!task) {
+    return 'task not found';
+  } else {
+    if (task.state !== req.body.state) {
+      task.state = req.body.state;
+    }
+    if (task.task !== req.body.task) {
+      task.task = req.body.task;
+    }
+    const newTask = new TaskModel(task);
+    return await newTask.save();
   }
-  if (task.task !== req.body.task) {
-    task.task = req.body.task;
-  }
-  const newTask = new TaskModel(task);
-  await newTask.save();
 
-  res.send("Old task : \n" + task + "\n" + "New task : \n" + newTask + "\n");
+  //res.send('Old task : \n' + task + '\n' + 'New task : \n' + newTask + '\n');
 }
-
-
-
-
-
-
-
-
-
-
-

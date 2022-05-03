@@ -1,0 +1,15 @@
+version: "3.8"
+services:
+  server:
+    build: .
+    environment:
+      - DB_URI=mongodb://mongo/todolist
+    ports:
+      - "3000:3000"
+
+  mongo:
+    image: "mongo:4.1"
+    volumes:
+      - todo-mongo-data:/var/lib/mongo
+volumes:
+  todo-mongo-data:

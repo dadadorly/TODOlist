@@ -1,21 +1,21 @@
 import mongoose from 'mongoose';
 
-export interface Task {
+export interface Todo {
   task: string;
-  state: boolean;
+  done: boolean;
 }
 
-const taskSchema = new mongoose.Schema<Task>({
+const todoSchema = new mongoose.Schema<Todo>({
   task: {
     type: String,
     required: true,
     minlength: 1,
     unique: true
   },
-  state: {
+  done: {
     type: Boolean,
     default: false
   }
 });
 
-export default mongoose.model('task', taskSchema);
+export default mongoose.model('todo', todoSchema);

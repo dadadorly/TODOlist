@@ -1,5 +1,5 @@
 import express from 'express';
-import { router as routerTodo } from './controllers/routes';
+import { router as routerTodo } from './controllers/todos/routes';
 import { startDB } from './db/dbconfig';
 import 'dotenv/config';
 

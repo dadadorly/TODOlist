@@ -1,3 +1,4 @@
+/*
 import todoModel from '../../models/todoModel';
 import { Request, Response } from 'express';
 import { TodoController } from './todoController';
@@ -83,10 +84,10 @@ describe('todoController', () => {
       // when
         const result = await todoController.addTodo(req)
       // then
-    /*  expect(todoModel).toHaveBeenCalledWith({
+      expect(todoModel).toHaveBeenCalledWith({
         task: "task",
         done: false
-      });*/
+      });
       expect(save).toHaveBeenCalled();
       expect(save).toHaveReturned();
       expect(result).toEqual({
@@ -160,3 +161,4 @@ describe('todoController', () => {
     });
   });
 });
+*/

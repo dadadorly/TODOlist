@@ -1,13 +1,15 @@
 import express from "express";
-import {router as routerTodo} from "./controllers/routes";
+import { router as routerTodo } from "./controllers/todos/routes";
+import { startDB } from "./db/dbconfig";
+import "dotenv/config";
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
-app
-  .use(express.json())
-  .use("/todos", routerTodo);
+app.use(express.json()).use("/todos", routerTodo);
 
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
+startDB().then(() => {
+  app.listen(port, () => {
+    console.log(`Example app listening on port ${port}`);
+  });
 });

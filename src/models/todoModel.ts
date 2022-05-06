@@ -10,8 +10,7 @@ const todoSchema = new mongoose.Schema<Todo>({
   task: {
     type: String,
     required: true,
-    minlength: 1,
-    unique: true
+    minlength: 1
   },
   done: {
     type: Boolean,

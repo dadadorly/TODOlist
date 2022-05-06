@@ -2,32 +2,27 @@ import TodoModel, { Todo } from "../../models/todoModel";
 
 export class TodoService {
   async getTodos() {
-    const todos = await TodoModel.find();
-    return todos;
+    return await TodoModel.find();
   }
 
   async getTodo(id: string) {
-    const todo = await TodoModel.findById(id);
-    return todo;
+    return await TodoModel.findById(id);
   }
 
   async addTodo(task: string) {
     const newTodo = new TodoModel({
       task: task
     });
-    newTodo.save();
+    await newTodo.save();
     return newTodo;
   }
 
   async deleteTodo(id: string) {
-    const todoDel = await TodoModel.findByIdAndDelete(id);
-    if (!todoDel) return "todo not found";
-    else return todoDel;
+    return await TodoModel.findByIdAndDelete(id);
   }
 
   async updateTodo(todo: Todo) {
-    const newTodo = new TodoModel(todo);
-    newTodo.save();
-    return newTodo;
+    const oldTodo = await TodoModel.findByIdAndUpdate(todo.id, todo);
+    return oldTodo;
   }
 }

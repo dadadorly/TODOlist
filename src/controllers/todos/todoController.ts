@@ -1,61 +1,32 @@
-import { Request, Response } from "express";
+import { Request } from "express";
 import { TodoService } from "./todoService";
-
-const todoService = new TodoService();
+import { Todo } from "../../models/todoModel";
+//import { NotFound } from "@tsed/exceptions";
 
 export class TodoController {
-  async getTodos(req: Request, res: Response) {
-    const todos = await todoService.getTodos();
+  protected todoService: TodoService = new TodoService();
 
-    res.json(todos);
-    return todos;
+  async getTodos() {
+    return await this.todoService.getTodos();
   }
 
-  async getTodo({ params: { id } }: Request<{ id: string }>, res: Response) {
-    id = "" + id;
-
-    const todo = await todoService.getTodo(id);
-
-    if (!todo) {
-      return "todo not found";
-    }
-
-    res.json(todo);
-    return todo;
+  async getTodo({ params: { id } }: Request<{ id: string }>) {
+    return await this.todoService.getTodo(id);
   }
 
-  async addTodo(req: Request, res: Response) {
-    const task = req.body.task;
-    const newTodo = await todoService.addTodo(task);
-    res.send('Todo : "' + task + '" has been created ');
-    return newTodo;
+  async addTodo({ body: { task } }: Request<Todo>) {
+    return await this.todoService.addTodo(task);
   }
 
-  async deleteTodo({ params: { id } }: Request<{ id: string }>, res: Response) {
-    const todoDel = await todoService.deleteTodo(id);
-    res.send("Todo has been deleted");
-    return todoDel;
+  async deleteTodo({ params: { id } }: Request<{ id: string }>) {
+    return await this.todoService.deleteTodo(id);
   }
 
-  async updateTodo(req: Request<{ id: string }>, res: Response) {
-    const id = req.params.id;
-
-    const todo = await todoService.getTodo(id);
-
-    if (!todo) {
-      res.send("Todo not found");
-      return "todo not found";
-    } else {
-      const newTodo = todo;
-      if (newTodo.done !== req.body.done) {
-        newTodo.done = req.body.done;
-      }
-      if (newTodo.task !== req.body.task) {
-        newTodo.task = req.body.task;
-      }
-      await todoService.updateTodo(newTodo as any);
-      res.send("Old todo : \n" + todo.task + "\n" + todo.done + "\n" + "New todo : \n" + newTodo.task + "\n" + newTodo.done + "\n");
-      return newTodo;
-    }
+  async updateTodo({ params: { id }, body: { task, done } }: Request<{ id: string }, Todo>) {
+    return this.todoService.updateTodo({
+      id,
+      task,
+      done
+    });
   }
 }

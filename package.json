@@ -27,6 +27,7 @@
   },
   "homepage": "https://github.com/dadadorly/TODOlist#readme",
   "dependencies": {
+    "@tsed/exceptions": "^6.114.5",
     "@types/mongoose": "^5.11.97",
     "dotenv": "^16.0.0",
     "express": "^4.17.3",
@@ -41,9 +42,9 @@
     "@typescript-eslint/eslint-plugin": "^5.20.0",
     "@typescript-eslint/parser": "^5.20.0",
     "eslint": "^8.14.0",
+    "eslint-config-prettier": "8.5.0",
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-prettier": "4.0.0",
-    "eslint-config-prettier": "8.5.0",
     "husky": "^7.0.4",
     "jest": "^27.5.1",
     "lint-staged": "^12.4.1",

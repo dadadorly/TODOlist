@@ -34,6 +34,7 @@ COPY --from=build /opt .
 
 # on réinstall les dépendances en purgeant celle de dev. Donc plus d'outil comme babel et typescript. 
 #RUN npm install --read-only-lockfile --production
+RUN npm set-script prepare ""
 RUN npm ci --production
 
 
@@ -43,8 +44,8 @@ RUN npm ci --production
 # Ca c'est pour PM2. Mais t'embête pas avec ça pour le moment
 #COPY processes.config.js .
 
-EXPOSE 8081
-ENV PORT 8081
+EXPOSE 3000
+ENV PORT 3000
 ENV NODE_ENV production
 
 # la commande a exécuter pour lancer l'image docker. dans ton cas: node dist/index.js

@@ -64,7 +64,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     needs: [ lint, test ]
-    if: ${{ github.event_name != 'pull_request' && (contains(github.ref, 'main')) }}
+    #if: ${{ github.event_name != 'pull_request' && (contains(github.ref, 'main')) }}
     steps:
       # Check-out your repository.
       - uses: actions/checkout@v2

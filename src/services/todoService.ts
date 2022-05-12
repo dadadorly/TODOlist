@@ -1,4 +1,4 @@
-import TodoModel, { Todo } from "../../models/todoModel";
+import TodoModel, { Todo } from "../models/todoModel";
 
 export class TodoService {
   async getTodos() {
@@ -9,9 +9,9 @@ export class TodoService {
     return await TodoModel.findById(id);
   }
 
-  async addTodo(task: string) {
+  async addTodo(title: string) {
     const newTodo = new TodoModel({
-      task: task
+      title: title
     });
     await newTodo.save();
     return newTodo;
@@ -22,7 +22,6 @@ export class TodoService {
   }
 
   async updateTodo(todo: Todo) {
-    const oldTodo = await TodoModel.findByIdAndUpdate(todo.id, todo);
-    return oldTodo;
+    return await TodoModel.findByIdAndUpdate(todo._id, todo);
   }
 }

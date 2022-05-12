@@ -13,12 +13,11 @@ export class TodoService {
     const newTodo = new TodoModel({
       title: title
     });
-    await newTodo.save();
-    return newTodo;
+    return await newTodo.save();
   }
 
   async deleteTodo(id: string) {
-    return await TodoModel.findByIdAndDelete(id);
+    await TodoModel.findByIdAndDelete(id);
   }
 
   async updateTodo(todo: Todo) {

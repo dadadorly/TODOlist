@@ -1,4 +1,4 @@
-import todoModel from "../models/todoModel";
+import todoModel, { Todo } from "../models/todoModel";
 import { TodoService } from "./todoService";
 
 jest.mock("../models/todoModel");
@@ -43,7 +43,7 @@ describe("todoService", () => {
       expect(result).toEqual(undefined);
     });
   });
-  describe("addTodos()", () => {
+  describe("addTodo()", () => {
     it("should return the added todo", async () => {
       const save = (jest.fn() as jest.Mock).mockResolvedValue({
         _id: "id",
@@ -63,6 +63,45 @@ describe("todoService", () => {
       });
       expect(save).toHaveBeenCalled();
       expect(save).toHaveReturned();
+      expect(result).toEqual({
+        _id: "id",
+        title: "title",
+        done: false
+      });
+    });
+  });
+  describe("deleteTodo()", () => {
+    it("should return undefined", async () => {
+      // given
+      (todoModel.findByIdAndDelete as jest.Mock).mockResolvedValue(undefined);
+      // when
+      await todoService.deleteTodo("id");
+      // then
+      expect(todoModel.findByIdAndDelete as jest.Mock).toHaveBeenCalledWith("id");
+    });
+  });
+  describe("updateTodo()", () => {
+    it("should return oldTodo", async () => {
+      // given
+      const oldTodo: Todo = {
+        _id: "id",
+        title: "title",
+        done: false
+      };
+      const newTodo: Todo = {
+        _id: "id",
+        title: "title",
+        done: true
+      };
+      (todoModel.findByIdAndUpdate as jest.Mock).mockResolvedValue(oldTodo);
+      // when
+      const result = await todoService.updateTodo(newTodo);
+      // then
+      expect(todoModel.findByIdAndUpdate as jest.Mock).toHaveBeenCalledWith(oldTodo._id, {
+        _id: "id",
+        title: "title",
+        done: true
+      });
       expect(result).toEqual({
         _id: "id",
         title: "title",

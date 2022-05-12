@@ -12,9 +12,9 @@ module.exports = {
   coverageThreshold: {
     global: {
       branches: 12.5,
-      functions: 73.33,
-      lines: 85.71,
-      statements: 85.71
+      functions: 100,
+      lines: 96.36,
+      statements: 96.36
     }
   },
   coveragePathIgnorePatterns: ["index.ts", "/node_modules/", "__mock__", "src/config", "src/bin", "fixture.ts", "src/db"]

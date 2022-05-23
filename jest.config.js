@@ -11,10 +11,10 @@ module.exports = {
   collectCoverageFrom: ["<rootDir>/src/**"],
   coverageThreshold: {
     global: {
-      branches: 12.5,
+      branches: 100,
       functions: 100,
-      lines: 96.36,
-      statements: 96.36
+      lines: 100,
+      statements: 100
     }
   },
   coveragePathIgnorePatterns: ["index.ts", "/node_modules/", "__mock__", "src/config", "src/bin", "fixture.ts", "src/db"]

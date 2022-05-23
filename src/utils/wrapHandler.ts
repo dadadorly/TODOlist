@@ -4,7 +4,6 @@ export function wrapHandler(fn: Function) {
   return async (req: Express.Request, res: Express.Response) => {
     try {
       const result = await fn(req, res);
-
       if (result === undefined) {
         return res.status(204).send();
       }

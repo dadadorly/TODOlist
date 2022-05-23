@@ -8,13 +8,16 @@ export async function startFakeDB() {
 
   // @ts-ignore
   const uri = global.MONGO_DB.getUri();
+  // @ts-ignore
+  global.MONGO_CONNECTION = await startDB(uri);
 
-  return startDB(uri);
   // The Server can be stopped again with
   // await mongod.stop();
 }
 
 export async function closeFakeDB() {
+  // @ts-ignore
+  await global.MONGO_CONNECTION.close();
   // @ts-ignore
   await global.MONGO_DB.stop();
 }

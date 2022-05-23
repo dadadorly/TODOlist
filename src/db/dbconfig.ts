@@ -10,6 +10,7 @@ const startDB = async (url: string) => {
   db.once("open", () => {
     //console.log("database connected");
   });
+  return db;
 };
 
 export { startDB };

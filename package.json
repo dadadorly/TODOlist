@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
+    "start:auto": "ts-node-dev src/index.ts",
     "start": "ts-node-esm src/index.ts",
     "start:prod": "NODE_ENV=production node dist/app.js",
     "build": "tsc --project tsconfig.compile.json",
@@ -51,6 +52,7 @@
     "supertest": "^6.2.3",
     "ts-jest": "^27.1.4",
     "ts-node": "^10.7.0",
+    "ts-node-dev": "^1.1.8",
     "typescript": "^4.6.3",
     "uuid": "^8.3.2"
   },

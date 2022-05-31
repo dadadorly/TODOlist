@@ -41,7 +41,7 @@ RUN npm ci --production
 #RUN npm prune --production
 
 
-# Ca c'est pour PM2. Mais t'embête pas avec ça pour le moment
+# Ca c'est pour PM2. Mais t'embête pas avec ça pour le moment©
 #COPY processes.config.js .
 
 EXPOSE 3000
@@ -51,5 +51,5 @@ ENV NODE_ENV production
 # la commande a exécuter pour lancer l'image docker. dans ton cas: node dist/index.js
 
 #ENTRYPOINT ["tail", "-f", "/dev/null"]
-CMD ["node", "./dist/src/app.js"]
+CMD ["node", "./dist/src/index.js"]
 #CMD ["pm2-runtime", "start", "processes.config.js", "--env", "production"]

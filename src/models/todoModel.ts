@@ -1,13 +1,13 @@
 import mongoose from "mongoose";
 
 export interface Todo {
-  id?: string;
-  task: string;
+  _id?: string;
+  title: string;
   done: boolean;
 }
 
 const todoSchema = new mongoose.Schema<Todo>({
-  task: {
+  title: {
     type: String,
     required: true,
     minlength: 1

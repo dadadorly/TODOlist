@@ -1,32 +1,46 @@
 import { Request } from "express";
-import { TodoService } from "./todoService";
+import { TodoService } from "../../services/todoService";
 import { Todo } from "../../models/todoModel";
-//import { NotFound } from "@tsed/exceptions";
+import { todoMapper } from "./todoMapper";
+import { NotFound } from "@tsed/exceptions";
 
 export class TodoController {
   protected todoService: TodoService = new TodoService();
 
   async getTodos() {
-    return await this.todoService.getTodos();
+    const todos = await this.todoService.getTodos();
+    return todos.map(todoMapper);
   }
 
   async getTodo({ params: { id } }: Request<{ id: string }>) {
-    return await this.todoService.getTodo(id);
+    const todo = await this.todoService.getTodo(id);
+    if (!todo) {
+      throw new NotFound("Todo not found");
+    }
+    return todoMapper(todo);
   }
 
-  async addTodo({ body: { task } }: Request<Todo>) {
-    return await this.todoService.addTodo(task);
+  async addTodo({ body: { title } }: Request<Todo>) {
+    const todo = await this.todoService.addTodo(title);
+    return todoMapper(todo);
   }
 
-  async deleteTodo({ params: { id } }: Request<{ id: string }>) {
-    return await this.todoService.deleteTodo(id);
+  async deleteTodo(req: Request<{ id: string }>) {
+    await this.getTodo(req);
+    await this.todoService.deleteTodo(req.params.id);
   }
 
-  async updateTodo({ params: { id }, body: { task, done } }: Request<{ id: string }, Todo>) {
-    return this.todoService.updateTodo({
-      id,
-      task,
+  async updateTodo(req: Request<{ id: string }, Todo>) {
+    await this.getTodo(req);
+    const {
+      params: { id },
+      body: { title, done }
+    } = req;
+    const todo = await this.todoService.updateTodo({
+      _id: id,
+      title,
       done
     });
+    return todoMapper(todo!);
   }
 }

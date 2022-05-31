@@ -1,8 +1,8 @@
 import mongoose from "mongoose";
 import "dotenv/config";
 
-const startDB = async () => {
-  await mongoose.connect(process.env.DB_URI as string);
+const startDB = async (url: string) => {
+  await mongoose.connect(url);
   const db = mongoose.connection;
   db.on("error", () => {
     //console.error(error);
@@ -10,6 +10,7 @@ const startDB = async () => {
   db.once("open", () => {
     //console.log("database connected");
   });
+  return db;
 };
 
 export { startDB };

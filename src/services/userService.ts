@@ -10,12 +10,12 @@ export class UserService {
   }
 
   async addUser(username: string, email: string, password: string) {
-    const newTodo = new UserModel({
+    const newUser = new UserModel({
       username: username,
       email: email,
       password: password
     });
-    return await newTodo.save();
+    return await newUser.save();
   }
 
   async deleteUser(id: string) {

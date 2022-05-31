@@ -5,6 +5,7 @@ export function userMapper(user: User) {
     id: user._id,
     username: user.username,
     email: user.email,
+    password: user.password,
     isAdmin: user.isAdmin
   };
 }

@@ -25,4 +25,8 @@ export class UserService {
   async updateUser(user: User) {
     return await UserModel.findByIdAndUpdate(user._id, user);
   }
+
+  async findByUsername(username: string) {
+    return UserModel.findOne({ username });
+  }
 }

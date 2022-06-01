@@ -42,4 +42,8 @@ export class UserController {
     });
     return userMapper(user!);
   }
+
+  async updateMyUsername(req: Request) {
+    console.log(req.user);
+  }
 }

@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import bcrypt from "bcrypt";
+import { comparePassword, encryptPassword } from "../utils/encryptPassword";
 
 export interface User {
   _id?: string;
@@ -40,23 +40,19 @@ userSchema.pre("save", async function (next) {
     // check method of registration
     const user = this;
     if (!user.isModified("password")) next();
-    // generate salt
-    const salt = await bcrypt.genSalt(10);
-    // hash the password
-    const hashedPassword = await bcrypt.hash(this.password, salt);
-    // replace plain text password with hashed password
-    this.password = hashedPassword;
+    this.password = await encryptPassword(this.password);
     next();
   } catch (error: any) {
     return next(error);
   }
 });
 
-userSchema.methods.verifyPassword = function (candidatePassword: string, cb: Function) {
-  bcrypt.compare(candidatePassword, this.password, function (err, isMatch) {
-    if (err) return cb(err);
-    cb(null, isMatch);
-  });
+userSchema.methods.verifyPassword = async function (candidatePassword: string, cb: Function) {
+  try {
+    cb(null, await comparePassword(candidatePassword, this.password));
+  } catch (err) {
+    cb(err);
+  }
 };
 
 export default mongoose.model("user", userSchema);

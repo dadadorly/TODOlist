@@ -17,4 +17,9 @@ describe("todoController", () => {
       expect(response.body).toEqual([]);
     });
   });
+  describe("POST /todos", () => {
+    it("should return todolist with one todo", async () => {
+      //request.post("/todos").send({ title: "todo-title" }).expect({});
+    });
+  });
 });

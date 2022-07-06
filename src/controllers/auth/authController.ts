@@ -1,12 +1,14 @@
 import Express from "express";
+import { userMapper } from "../users/userMapper";
+import { User } from "../../models/userModel";
+
 export class AuthController {
   login(req: Express.Request) {
-    console.log(req.user);
-    return "Login";
+    return userMapper(req.user as User);
   }
-  logout(req: Express.Request, res: Express.Response) {
-    req.logout();
-    res.status(204).send();
-    return "Logout";
+  logout(req: Express.Request) {
+    req.session.destroy(() => {
+      return "Logout";
+    });
   }
 }

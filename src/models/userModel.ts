@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { comparePassword, encryptPassword } from "../utils/encryptPassword";
+import { encryptPassword } from "../utils/encryptPassword";
 
 export interface User {
   _id?: string;
@@ -46,13 +46,5 @@ userSchema.pre("save", async function (next) {
     return next(error);
   }
 });
-
-userSchema.methods.verifyPassword = async function (candidatePassword: string, cb: Function) {
-  try {
-    cb(null, await comparePassword(candidatePassword, this.password));
-  } catch (err) {
-    cb(err);
-  }
-};
 
 export default mongoose.model("user", userSchema);

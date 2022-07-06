@@ -7,7 +7,9 @@ export async function encryptPassword(password: string) {
   return bcrypt.hash(password, salt);
 }
 
-export async function comparePassword(candidatePassword: string, password: string) {
+//export const comparePassword = util.promisify(bcrypt.compare);
+
+export async function comparePassword(candidatePassword: string, password: string): Promise<boolean> {
   return new Promise((resolve, reject) => {
     bcrypt.compare(candidatePassword, password, (err, isMatch) => {
       if (err) return reject(err);

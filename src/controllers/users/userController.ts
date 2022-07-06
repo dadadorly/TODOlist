@@ -1,15 +1,17 @@
-import { UserService } from "../../services/userService";
 import { Request } from "express";
-import { NotFound } from "@tsed/exceptions";
-import { Todo } from "../../models/todoModel";
+import { UserService } from "../../services/userService";
+import { User } from "../../models/userModel";
 import { userMapper } from "./userMapper";
+import { NotFound } from "@tsed/exceptions";
 
 export class UserController {
   protected userService: UserService = new UserService();
+
   async getUsers() {
     const users = await this.userService.getUsers();
     return users.map(userMapper);
   }
+
   async getUser({ params: { id } }: Request<{ id: string }>) {
     const user = await this.userService.getUser(id);
     if (!user) {
@@ -18,7 +20,7 @@ export class UserController {
     return userMapper(user);
   }
 
-  async addUser({ body: { username, email, password } }: Request<Todo>) {
+  async addUser({ body: { username, email, password } }: Request<User>) {
     const user = await this.userService.addUser(username, email, password);
     return userMapper(user);
   }
@@ -28,7 +30,7 @@ export class UserController {
     await this.userService.deleteUser(req.params.id);
   }
 
-  async updateUser(req: Request<{ id: string }, Todo>) {
+  async updateUser(req: Request<{ id: string }, User>) {
     await this.getUser(req);
     const {
       params: { id },
@@ -41,9 +43,5 @@ export class UserController {
       password
     });
     return userMapper(user!);
-  }
-
-  async updateMyUsername(req: Request) {
-    console.log(req.user);
   }
 }
